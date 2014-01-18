@@ -4,6 +4,12 @@ import csv
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
+from datetime import datetime
+
+# Add time along with the log
+def log(string):
+        print str(datetime.now()) + " " + string
+
 
 # Convert the gender
 def convertGender(gender):
@@ -57,7 +63,7 @@ def getTicketCode(ticket):
 
 if __name__ == '__main__':	
 
-	print("Reading Train Data")
+	log("Reading Train Data")
 	
 	train = csv.reader(open('train.csv','rb'))
 	header = train.next()
@@ -69,9 +75,9 @@ if __name__ == '__main__':
 	
 	train_data = np.array(train_data)
 	
-	print("DONE Reading Train Data")
+	log("DONE Reading Train Data")
 	
-	print("Preprocessing Train Data")
+	log("Preprocessing Train Data")
 	# replace categorical attributes
 	for row in train_data:
 		
@@ -85,18 +91,18 @@ if __name__ == '__main__':
 
 	features = train_data[0::,[2,3,4,6,8,11]]
 	result = train_data[0::,1]
-	print("DONE Preprocessing Train Data")
+	log("DONE Preprocessing Train Data")
 
-	print("Fitting Train Data")
+	log("Fitting Train Data")
 	adaBoost = AdaBoostClassifier(RandomForestClassifier(n_estimators = 1000),
                          algorithm="SAMME",
                          n_estimators=200)
 	
 	adaBoost = adaBoost.fit(features,result)
-	print("DONE Fitting Train Data")
+	log("DONE Fitting Train Data")
 
 	######READING TEST DATA################	
-	print("Reading Test Data")
+	log("Reading Test Data")
 	test = csv.reader(open('test.csv','rb'))
 	header = test.next()
 	
@@ -104,10 +110,10 @@ if __name__ == '__main__':
 	for row in test:
 	        test_data.append(row)
 	test_data = np.array(test_data)
-	print("DONE Reading Test Data")
+	log("DONE Reading Test Data")
 	
 	# replace categorical attributes
-	print("Preprocessing Test Data")
+	log("Preprocessing Test Data")
 	for row in test_data:
 		
 		row[3] = convertGender(row[3])
@@ -119,10 +125,10 @@ if __name__ == '__main__':
 		
 
 	features = test_data[0::,[1,2,3,5,7,10]]
-	print("DONE Preprocessing Test Data")
+	log("DONE Preprocessing Test Data")
 	
-	print("Predicting Test Data")
+	log("Predicting Test Data")
 	Output = adaBoost.predict(features)
 	
 	np.savetxt("adaBoostRandomForest.csv",Output,delimiter=",",fmt="%s")	
-	print("DONE Predicting Test Data")
+	log("DONE Predicting Test Data")
