@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from datetime import datetime
+from sklearn.cross_validation import cross_val_score
 
 # Add time along with the log
 def log(string):
@@ -100,6 +101,13 @@ if __name__ == '__main__':
 	
 	adaBoost = adaBoost.fit(features,result)
 	log("DONE Fitting Train Data")
+
+	log("Calculating score")
+	scores = cross_val_score(adaBoost, features, result)
+	log("Training score")
+	print scores.mean()
+	log("DONE Calculating score")
+	
 
 	######READING TEST DATA################	
 	log("Reading Test Data")
