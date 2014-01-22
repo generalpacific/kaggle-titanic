@@ -69,6 +69,19 @@ def getTicketCode(ticket):
     deptCode = ord(deptName[0]) + len(deptName)
     return deptCode
 
+# Return the same fare if it is non-empty.
+# Else return the average fro the given 'ticket class'
+# The average fare is already calculated in a spreadsheet
+def getFare(fare,ticketclass):
+	if fare != '':
+		return fare
+	if ticketclass == 1:
+		return '94'
+	if ticketclass == 2:
+		return '22'
+	if ticketclass == '3':
+		return '12'
+
 ##################################################
 # METHODS FOR DIFFERENT ALGORITHMS
 #
@@ -108,11 +121,11 @@ def runalgorithm(algorithm,trainfeatures,trainlabels,testfeatures):
 	log(logname,algorithmName + " DONE Scoring train data")
 	
 	log(logname,algorithmName + " Predicting test data")
-	Output = algorithm.predict(trainfeatures)	
+	Output = algorithm.predict(testfeatures)	
 	log(logname,algorithmName + " DONE Predicting test data")
-	writeFile = "randomalgorithm.csv"
+	writeFile = algorithmName + ".csv"
 	log(logname,algorithmName + " Writing results to " + writeFile)
-	np.savetxt("randomalgorithm.csv",Output,delimiter=",algorithmName + " ,fmt="%s")
+	np.savetxt(writeFile,Output,delimiter=",algorithmName + " ,fmt="%s")
 	log(logname,algorithmName + " DONE Writing results to " + writeFile)
 	return score
 
@@ -146,6 +159,7 @@ if __name__ == '__main__':
 		row[3] = getTitleHash(title,row[4])
 		row[6] = getFamily(row[6],row[7])
 		row[8] = getTicketCode(row[8])
+		row[9] = getFare(row[9],row[2])
 		row[11] = convertEmbarked(row[11])
 		
 
@@ -174,6 +188,7 @@ if __name__ == '__main__':
 		row[2] = getTitleHash(title,row[3])
 		row[5] = getFamily(row[5],row[6])
 		row[7] = getTicketCode(row[7])
+		row[8] = getFare(row[8],row[1])
 		row[10] = convertEmbarked(row[10])
 		
 
