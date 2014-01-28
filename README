@@ -2,14 +2,6 @@
 This is my Python code for Titanic Challenge on Kaggle (https://www.kaggle.com/c/titanic-gettingStarted)
 Presently the Random Forest and AdaBoost Solution is giving the accuracy of 0.7799
 
-TODOs in code:
+List of outstanding issues:
 
-1) Pass the test and train files as parameters to the script
-2) Refactor and more documentation
-3) Possibly pass the algorithm as parameter
-
-TODOs in experimentation:
-
-1) Try different ensemble techniques
-2) Binning up fare attribute
-3) Try Naive Bayes and SVMs
+https://github.com/prashantc29/KaggleTitanic/issues?state=open
