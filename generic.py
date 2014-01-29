@@ -11,6 +11,7 @@ from datetime import datetime
 from sklearn.cross_validation import cross_val_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn import svm
 
 # Add time along with the log
 def log(logname,string):
@@ -95,6 +96,10 @@ def getFare(fare,ticketclass):
 def randomforest(trainfeatures,trainlabels,testfeatures):
 	RandomForest = RandomForestClassifier(n_estimators = 1000)
 	return runalgorithm(RandomForest,trainfeatures,trainlabels,testfeatures)
+
+def supportVectorMachine(trainfeatures,trainlabels,testfeatures):
+	supportVectorMachine = svm.SVC()
+	return runalgorithm(supportVectorMachine,trainfeatures,trainlabels,testfeatures)
 
 def decisiontree(trainfeatures,trainlabels,testfeatures):
 	tree = DecisionTreeClassifier(random_state = 1000)
@@ -211,10 +216,10 @@ if __name__ == '__main__':
 	scores['Random Forest'] = score
 	log(logname,"DONE WITH Random Forest")
 
-	log(logname,"Calling AdaBoost")
-	score = adaboost(trainfeatures,trainlabels,testfeatures)
-	scores['AdaBoost'] = score
-	log(logname,"DONE WITH AdaBoost")
+#	log(logname,"Calling AdaBoost")
+#	score = adaboost(trainfeatures,trainlabels,testfeatures)
+#	scores['AdaBoost'] = score
+#	log(logname,"DONE WITH AdaBoost")
 	
 	log(logname,"Calling Decision Tree")
 	score = decisiontree(trainfeatures,trainlabels,testfeatures)
@@ -226,6 +231,11 @@ if __name__ == '__main__':
 	scores['Naive Bayes'] = score
 	log(logname,"DONE WITH Naive Bayes")
 
+	log(logname,"Calling SVM")
+	score = supportVectorMachine(trainfeatures,trainlabels,testfeatures)
+	scores['SVM'] = score
+	log(logname,"DONE WITH SVM")
+	
 	print "\nSCORES\n"
 	for k, v in scores.iteritems():
 		print k + "\t" + v
