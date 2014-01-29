@@ -10,6 +10,7 @@ from sklearn.ensemble import AdaBoostClassifier
 from datetime import datetime
 from sklearn.cross_validation import cross_val_score
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
 
 # Add time along with the log
 def log(logname,string):
@@ -55,11 +56,12 @@ def getTitleHash(title,gender):
 
 # returns one if the passenger had a family
 def getFamily(sibsp,parch):
-	if int(sibsp) + int(parch) > 0:
-		family = 1
-	else:
-		family = 0
-	return family
+	#if int(sibsp) + int(parch) > 0:
+	#	family = 1
+	#else:
+	#	family = 0
+	#return family
+	return int(sibsp) + int(parch)
 
 # Pull out the dept from the ticket number
 def getTicketCode(ticket):
@@ -97,6 +99,10 @@ def randomforest(trainfeatures,trainlabels,testfeatures):
 def decisiontree(trainfeatures,trainlabels,testfeatures):
 	tree = DecisionTreeClassifier(random_state = 1000)
 	return runalgorithm(tree,trainfeatures,trainlabels,testfeatures)
+
+def naivebayes(trainfeatures,trainlabels,testfeatures):
+	nb = GaussianNB()
+	return runalgorithm(nb,trainfeatures,trainlabels,testfeatures)
 
 def adaboost(trainfeatures,trainlabels,testfeatures):
 	adaBoost = AdaBoostClassifier(RandomForestClassifier(n_estimators = 1000),
@@ -162,9 +168,9 @@ if __name__ == '__main__':
 		row[9] = getFare(row[9],row[2])
 		row[11] = convertEmbarked(row[11])
 		
-
 	trainfeatures = train_data[0::,[2,3,4,6,8,11]]
 	trainlabels = train_data[0::,1]
+	trainfeatures = trainfeatures.astype(np.float)
 	log(logname,"DONE Preprocessing Train Data")
 
 
@@ -193,6 +199,7 @@ if __name__ == '__main__':
 		
 
 	testfeatures = test_data[0::,[1,2,3,5,7,10]]
+	testfeatures = testfeatures.astype(np.float)
 	log(logname,"DONE Preprocessing Test Data")
 	
 	####################### TRAIN AND TEST ##########################
@@ -213,6 +220,11 @@ if __name__ == '__main__':
 	score = decisiontree(trainfeatures,trainlabels,testfeatures)
 	scores['Decision Tree'] = score
 	log(logname,"DONE WITH Decision Tree")
+
+	log(logname,"Calling Naive Bayes")
+	score = naivebayes(trainfeatures,trainlabels,testfeatures)
+	scores['Naive Bayes'] = score
+	log(logname,"DONE WITH Naive Bayes")
 
 	print "\nSCORES\n"
 	for k, v in scores.iteritems():
